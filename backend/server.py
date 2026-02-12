@@ -627,6 +627,211 @@ async def get_seasonal_content(month: Optional[str] = None):
         raise HTTPException(status_code=404, detail="Month not found")
     return {"seasonal_content": SEASONAL_CONTENT}
 
+# Viral Hooks Generator
+@api_router.get("/viral-hooks/types")
+async def get_viral_hook_types():
+    return {"types": list(VIRAL_HOOKS.keys())}
+
+@api_router.post("/viral-hooks/generate")
+async def generate_viral_hooks(request: ViralHookRequest):
+    try:
+        api_key = os.environ.get("EMERGENT_LLM_KEY")
+        if not api_key:
+            raise HTTPException(status_code=500, detail="API key not configured")
+        
+        base_hooks = VIRAL_HOOKS.get(request.hook_type, VIRAL_HOOKS["curiosity"])
+        
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=f"hooks-{str(uuid.uuid4())}",
+            system_message="""You are a viral content strategist for Instagram photographers.
+            Generate attention-grabbing hooks that stop the scroll and drive engagement.
+            Return as JSON array with objects: hook, full_caption, hashtags (array), best_for (reel/post/story)"""
+        ).with_model("gemini", "gemini-3-flash-preview")
+        
+        niche_context = f" for {request.niche} photography" if request.niche else ""
+        
+        prompt = f"""Generate {request.count} viral Instagram hooks{niche_context}.
+        Hook type: {request.hook_type}
+        
+        Example hooks for inspiration (create NEW ones): {base_hooks[:2]}
+        
+        For each hook include:
+        - hook: The attention-grabbing first line (under 10 words)
+        - full_caption: Complete caption using the hook (150-200 words)
+        - hashtags: 5 relevant hashtags
+        - best_for: whether it works best as reel, post, or story
+        
+        Make them scroll-stopping, curiosity-inducing, and shareable!
+        Return as JSON array."""
+        
+        user_message = UserMessage(text=prompt)
+        response = await chat.send_message(user_message)
+        
+        import json
+        try:
+            response_text = response.strip()
+            if "```json" in response_text:
+                response_text = response_text.split("```json")[1].split("```")[0]
+            elif "```" in response_text:
+                response_text = response_text.split("```")[1].split("```")[0]
+            
+            hooks_data = json.loads(response_text)
+            return {"hooks": hooks_data[:request.count], "hook_type": request.hook_type}
+        except json.JSONDecodeError:
+            # Fallback to static hooks
+            fallback = [{"hook": h, "full_caption": f"{h}\n\n[Your story here]\n\nFollow for more!", "hashtags": ["#photography", "#photographer"], "best_for": "post"} for h in base_hooks[:request.count]]
+            return {"hooks": fallback, "hook_type": request.hook_type}
+    except Exception as e:
+        logger.error(f"Viral hooks generation error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate hooks: {str(e)}")
+
+@api_router.get("/viral-hooks/static")
+async def get_static_viral_hooks():
+    return {"hooks": VIRAL_HOOKS}
+
+# Reel Ideas
+@api_router.get("/reel-ideas/categories")
+async def get_reel_categories():
+    return {"categories": list(REEL_IDEAS.keys())}
+
+@api_router.post("/reel-ideas/generate")
+async def generate_reel_ideas(request: ReelIdeaRequest):
+    try:
+        api_key = os.environ.get("EMERGENT_LLM_KEY")
+        if not api_key:
+            raise HTTPException(status_code=500, detail="API key not configured")
+        
+        category = request.category or "trending"
+        base_ideas = REEL_IDEAS.get(category, REEL_IDEAS["trending"])
+        
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=f"reels-{str(uuid.uuid4())}",
+            system_message="""You are an Instagram Reels strategist for photographers.
+            Generate trending reel ideas that drive views and followers.
+            Return as JSON array with objects: title, concept, script_outline, hook, duration, trending_audio_suggestion, hashtags"""
+        ).with_model("gemini", "gemini-3-flash-preview")
+        
+        niche_context = f" for {request.niche} photography" if request.niche else ""
+        
+        prompt = f"""Generate {request.count} Instagram Reel ideas{niche_context}.
+        Category: {category}
+        
+        Base ideas for context: {[i['title'] for i in base_ideas[:2]]}
+        
+        For each reel include:
+        - title: Catchy title for the reel
+        - concept: What the reel shows
+        - script_outline: Brief scene-by-scene breakdown
+        - hook: First 3 seconds hook to stop scrolling
+        - duration: Recommended length
+        - trending_audio_suggestion: Type of audio that works
+        - hashtags: 5 relevant hashtags
+        
+        Focus on trends that drive saves, shares, and follows!
+        Return as JSON array."""
+        
+        user_message = UserMessage(text=prompt)
+        response = await chat.send_message(user_message)
+        
+        import json
+        try:
+            response_text = response.strip()
+            if "```json" in response_text:
+                response_text = response_text.split("```json")[1].split("```")[0]
+            elif "```" in response_text:
+                response_text = response_text.split("```")[1].split("```")[0]
+            
+            reels_data = json.loads(response_text)
+            return {"reels": reels_data[:request.count], "category": category}
+        except json.JSONDecodeError:
+            return {"reels": base_ideas[:request.count], "category": category}
+    except Exception as e:
+        logger.error(f"Reel ideas generation error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate reel ideas: {str(e)}")
+
+@api_router.get("/reel-ideas/static")
+async def get_static_reel_ideas():
+    return {"ideas": REEL_IDEAS}
+
+# Client Magnets (Booking-focused content)
+@api_router.post("/client-magnets/generate")
+async def generate_client_magnet(request: ClientMagnetRequest):
+    try:
+        api_key = os.environ.get("EMERGENT_LLM_KEY")
+        if not api_key:
+            raise HTTPException(status_code=500, detail="API key not configured")
+        
+        templates = CLIENT_MAGNETS.get(f"{request.template_type}_templates", CLIENT_MAGNETS["portfolio_templates"])
+        
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=f"magnet-{str(uuid.uuid4())}",
+            system_message="""You are a photography business coach specializing in Instagram marketing.
+            Generate posts that attract ideal clients and drive bookings.
+            Return as JSON with: caption, cta, hashtags, posting_tips"""
+        ).with_model("gemini", "gemini-3-flash-preview")
+        
+        details_str = str(request.details) if request.details else "general session"
+        
+        prompt = f"""Create a client-attracting Instagram post for a {request.niche} photographer.
+        Template type: {request.template_type}
+        Client name (if provided): {request.client_name or '[Client Name]'}
+        Details: {details_str}
+        
+        Generate:
+        - caption: Compelling caption that showcases value and builds trust (200-300 words)
+        - cta: Strong call-to-action that drives DMs or bookings
+        - hashtags: 15 strategic hashtags (mix of niche, location, and engagement hashtags)
+        - posting_tips: 3 tips for maximizing this post's reach
+        
+        Make it authentic, not salesy. Focus on emotion and transformation.
+        Return as JSON."""
+        
+        user_message = UserMessage(text=prompt)
+        response = await chat.send_message(user_message)
+        
+        import json
+        try:
+            response_text = response.strip()
+            if "```json" in response_text:
+                response_text = response_text.split("```json")[1].split("```")[0]
+            elif "```" in response_text:
+                response_text = response_text.split("```")[1].split("```")[0]
+            
+            magnet_data = json.loads(response_text)
+            return {"magnet": magnet_data, "template_type": request.template_type}
+        except json.JSONDecodeError:
+            return {"magnet": {"caption": templates[0], "cta": CTA_TEMPLATES["booking"][0], "hashtags": NICHE_HASHTAGS.get(request.niche, [])}, "template_type": request.template_type}
+    except Exception as e:
+        logger.error(f"Client magnet generation error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate client magnet: {str(e)}")
+
+# CTA Generator
+@api_router.get("/cta/types")
+async def get_cta_types():
+    return {"types": list(CTA_TEMPLATES.keys())}
+
+@api_router.get("/cta/{cta_type}")
+async def get_cta_templates(cta_type: str):
+    if cta_type not in CTA_TEMPLATES:
+        raise HTTPException(status_code=404, detail="CTA type not found")
+    return {"type": cta_type, "templates": CTA_TEMPLATES[cta_type]}
+
+# Bio Generator
+@api_router.get("/bio-templates/{niche}")
+async def get_bio_templates(niche: str):
+    templates = BIO_TEMPLATES.get(niche, BIO_TEMPLATES.get("portrait", []))
+    return {"niche": niche, "templates": templates}
+
+# Hashtag Strategy
+@api_router.get("/hashtag-strategy/{account_size}")
+async def get_hashtag_strategy(account_size: str):
+    if account_size not in HASHTAG_STRATEGY:
+        raise HTTPException(status_code=404, detail="Account size not found. Use: small_account, growing_account, established_account")
+    return {"account_size": account_size, "strategy": HASHTAG_STRATEGY[account_size]}
+
 # Caption Generation
 @api_router.post("/content/generate-caption", response_model=CaptionResponse)
 async def generate_caption(request: CaptionRequest):
