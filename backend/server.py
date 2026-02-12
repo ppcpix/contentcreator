@@ -274,6 +274,194 @@ async def get_hashtags(niche: str):
         raise HTTPException(status_code=404, detail="Niche not found")
     return {"niche": niche, "hashtags": NICHE_HASHTAGS[niche]}
 
+# Photography Tips
+@api_router.get("/tips/categories")
+async def get_tip_categories():
+    return {"categories": list(PHOTOGRAPHY_TIPS.keys())}
+
+@api_router.post("/tips/generate")
+async def generate_photography_tips(request: TipsRequest):
+    try:
+        api_key = os.environ.get("EMERGENT_LLM_KEY")
+        if not api_key:
+            raise HTTPException(status_code=500, detail="API key not configured")
+        
+        categories = request.categories or list(PHOTOGRAPHY_TIPS.keys())
+        
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=f"tips-{str(uuid.uuid4())}",
+            system_message="""You are an expert photography coach and social media strategist. 
+            Generate engaging photography tips that can be turned into Instagram posts.
+            Return response as JSON array with objects: category, tip, caption_idea, hashtags (array)"""
+        ).with_model("gemini", "gemini-3-flash-preview")
+        
+        # Get some base tips for context
+        base_tips = []
+        for cat in categories[:3]:
+            if cat in PHOTOGRAPHY_TIPS:
+                base_tips.extend(PHOTOGRAPHY_TIPS[cat][:2])
+        
+        prompt = f"""Generate {request.count} unique, actionable photography tips for Instagram posts.
+        Categories to focus on: {', '.join(categories)}
+        
+        Base context tips (generate NEW ones, don't repeat): {base_tips[:3]}
+        
+        For each tip include:
+        - category: one of {categories}
+        - tip: the actual photography tip (concise, actionable)
+        - caption_idea: a ready-to-post Instagram caption sharing this tip
+        - hashtags: 5 relevant hashtags
+        
+        Make tips engaging, valuable, and shareable. Mix educational with inspirational.
+        Return as JSON array."""
+        
+        user_message = UserMessage(text=prompt)
+        response = await chat.send_message(user_message)
+        
+        import json
+        try:
+            response_text = response.strip()
+            if "```json" in response_text:
+                response_text = response_text.split("```json")[1].split("```")[0]
+            elif "```" in response_text:
+                response_text = response_text.split("```")[1].split("```")[0]
+            
+            tips_data = json.loads(response_text)
+            tips = []
+            for tip in tips_data[:request.count]:
+                tips.append(PhotographyTip(
+                    category=tip.get("category", "general"),
+                    tip=tip.get("tip", ""),
+                    caption_idea=tip.get("caption_idea", ""),
+                    hashtags=tip.get("hashtags", [])
+                ))
+            
+            return {"tips": [t.model_dump() for t in tips]}
+        except json.JSONDecodeError:
+            # Fallback to static tips
+            fallback_tips = []
+            for cat in categories:
+                if cat in PHOTOGRAPHY_TIPS:
+                    for tip_text in PHOTOGRAPHY_TIPS[cat][:request.count // len(categories) + 1]:
+                        fallback_tips.append(PhotographyTip(
+                            category=cat,
+                            tip=tip_text,
+                            caption_idea=f"📸 Pro Tip: {tip_text}\n\nDouble tap if this helped! 💡",
+                            hashtags=["#photographytips", "#phototips", f"#{cat}tips", "#learnphotography", "#photographylife"]
+                        ))
+            return {"tips": [t.model_dump() for t in fallback_tips[:request.count]]}
+    except Exception as e:
+        logger.error(f"Tips generation error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate tips: {str(e)}")
+
+@api_router.get("/tips/static")
+async def get_static_tips():
+    """Get all static photography tips organized by category"""
+    return {"tips": PHOTOGRAPHY_TIPS}
+
+# Content Mix Ideas
+@api_router.get("/content-mix/categories")
+async def get_content_mix_categories():
+    return {"categories": list(CONTENT_MIX_IDEAS.keys())}
+
+@api_router.post("/content-mix/generate")
+async def generate_content_mix(request: ContentMixRequest):
+    try:
+        api_key = os.environ.get("EMERGENT_LLM_KEY")
+        if not api_key:
+            raise HTTPException(status_code=500, detail="API key not configured")
+        
+        categories = request.categories or list(CONTENT_MIX_IDEAS.keys())
+        
+        chat = LlmChat(
+            api_key=api_key,
+            session_id=f"mix-{str(uuid.uuid4())}",
+            system_message="""You are a creative Instagram strategist for photography businesses.
+            Generate diverse content ideas that go beyond just portfolio shots.
+            Return response as JSON array with objects: category, idea, description, caption, hashtags (array), content_type"""
+        ).with_model("gemini", "gemini-3-flash-preview")
+        
+        # Get base ideas for context
+        base_ideas = []
+        for cat in categories[:2]:
+            if cat in CONTENT_MIX_IDEAS:
+                base_ideas.extend(CONTENT_MIX_IDEAS[cat][:2])
+        
+        prompt = f"""Generate {request.count} creative Instagram content ideas for a photography business.
+        Categories: {', '.join(categories)}
+        
+        Context ideas (generate NEW ones): {base_ideas}
+        
+        For each idea include:
+        - category: one of {categories}
+        - idea: short title of the content idea
+        - description: what to create/post
+        - caption: ready-to-use Instagram caption
+        - hashtags: 5 relevant hashtags
+        - content_type: photo, carousel, reel, or story
+        
+        Be creative! Think engagement, authenticity, and value for followers.
+        Return as JSON array."""
+        
+        user_message = UserMessage(text=prompt)
+        response = await chat.send_message(user_message)
+        
+        import json
+        try:
+            response_text = response.strip()
+            if "```json" in response_text:
+                response_text = response_text.split("```json")[1].split("```")[0]
+            elif "```" in response_text:
+                response_text = response_text.split("```")[1].split("```")[0]
+            
+            ideas_data = json.loads(response_text)
+            ideas = []
+            for idea in ideas_data[:request.count]:
+                ideas.append(ContentMixIdea(
+                    category=idea.get("category", "general"),
+                    idea=idea.get("idea", ""),
+                    description=idea.get("description", ""),
+                    caption=idea.get("caption", ""),
+                    hashtags=idea.get("hashtags", []),
+                    content_type=idea.get("content_type", "photo")
+                ))
+            
+            return {"ideas": [i.model_dump() for i in ideas]}
+        except json.JSONDecodeError:
+            # Fallback
+            fallback_ideas = []
+            for cat in categories:
+                if cat in CONTENT_MIX_IDEAS:
+                    for idea_text in CONTENT_MIX_IDEAS[cat][:request.count // len(categories) + 1]:
+                        fallback_ideas.append(ContentMixIdea(
+                            category=cat,
+                            idea=idea_text,
+                            description=f"Create content around: {idea_text}",
+                            caption=f"✨ {idea_text}\n\nWhat content would you like to see more of? Comment below! 👇",
+                            hashtags=["#photographybusiness", "#contentcreator", "#instagramtips", "#photographerlife", "#socialmediatips"],
+                            content_type="carousel"
+                        ))
+            return {"ideas": [i.model_dump() for i in fallback_ideas[:request.count]]}
+    except Exception as e:
+        logger.error(f"Content mix generation error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate content mix: {str(e)}")
+
+@api_router.get("/content-mix/static")
+async def get_static_content_mix():
+    """Get all static content mix ideas"""
+    return {"ideas": CONTENT_MIX_IDEAS}
+
+# Seasonal Content Suggestions
+@api_router.get("/seasonal")
+async def get_seasonal_content(month: Optional[str] = None):
+    if month:
+        month_lower = month.lower()
+        if month_lower in SEASONAL_CONTENT:
+            return {"month": month_lower, "ideas": SEASONAL_CONTENT[month_lower]}
+        raise HTTPException(status_code=404, detail="Month not found")
+    return {"seasonal_content": SEASONAL_CONTENT}
+
 # Caption Generation
 @api_router.post("/content/generate-caption", response_model=CaptionResponse)
 async def generate_caption(request: CaptionRequest):
