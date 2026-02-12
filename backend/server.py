@@ -151,6 +151,155 @@ SEASONAL_CONTENT = {
     "december": ["Holiday mini sessions", "Year in review posts", "Winter holiday magic shots"]
 }
 
+# Viral content hooks and templates
+VIRAL_HOOKS = {
+    "curiosity": [
+        "The one mistake 90% of photographers make...",
+        "I never share this editing secret, but today...",
+        "What I wish I knew before my first wedding shoot",
+        "The $0 trick that doubled my bookings",
+        "Stop doing this if you want better photos"
+    ],
+    "storytelling": [
+        "This photo almost didn't happen. Here's why...",
+        "Behind every great photo is a story...",
+        "The moment that changed everything...",
+        "They said it couldn't be done. We proved them wrong.",
+        "3 years ago I almost quit photography. Today..."
+    ],
+    "value": [
+        "Save this for your next photoshoot",
+        "Free tip that pros charge $500 to teach",
+        "The exact settings I used for this shot",
+        "Copy my workflow (step by step)",
+        "Steal my client communication template"
+    ],
+    "engagement": [
+        "Hot take: [controversial opinion]",
+        "Unpopular opinion in photography...",
+        "Rate this edit 1-10 👇",
+        "Which one do you prefer? A or B",
+        "Wrong answers only: What did I say to get this reaction?"
+    ],
+    "social_proof": [
+        "Another happy client! Here's what they said...",
+        "Fully booked for [month]! Here's how...",
+        "From 0 to 50 bookings in 6 months",
+        "Why clients keep coming back year after year",
+        "The review that made me tear up"
+    ]
+}
+
+# Reel ideas for photographers
+REEL_IDEAS = {
+    "trending": [
+        {"title": "Photo Dump Transition", "description": "Show multiple shots from one session with trending audio", "duration": "15-30s"},
+        {"title": "Before/After Edit", "description": "Split screen showing RAW vs edited photo transformation", "duration": "15s"},
+        {"title": "Day in My Life", "description": "Document a full photoshoot day from prep to delivery", "duration": "60-90s"},
+        {"title": "Gear Check", "description": "Quick reveal of what's in your camera bag", "duration": "15-30s"},
+        {"title": "Client Reaction", "description": "Film client seeing their photos for first time", "duration": "15-30s"}
+    ],
+    "educational": [
+        {"title": "Quick Posing Tips", "description": "3 poses anyone can do in 30 seconds", "duration": "30s"},
+        {"title": "Lighting Hack", "description": "Show a simple lighting technique with before/after", "duration": "15-30s"},
+        {"title": "Location Scout", "description": "Reveal a hidden gem location in your city", "duration": "30-60s"},
+        {"title": "Edit With Me", "description": "Speed edit of one photo with tips overlay", "duration": "60s"},
+        {"title": "Mistake to Masterpiece", "description": "Show how you saved a 'ruined' photo", "duration": "30s"}
+    ],
+    "engagement_boosters": [
+        {"title": "Guess the Edit", "description": "Show original, let followers guess the final look", "duration": "15s"},
+        {"title": "This or That", "description": "Two editing styles, ask followers to choose", "duration": "15s"},
+        {"title": "POV: You Booked Me", "description": "Show the client experience from inquiry to delivery", "duration": "30-60s"},
+        {"title": "Red Flags in Photography", "description": "Humorous take on client/photographer red flags", "duration": "30s"},
+        {"title": "Photographer Problems", "description": "Relatable struggles with humor", "duration": "15-30s"}
+    ]
+}
+
+# Bio optimization templates
+BIO_TEMPLATES = {
+    "wedding": [
+        "📸 Capturing love stories since [year]",
+        "💒 Wedding & Elopement Photographer",
+        "✨ Turning moments into forever memories",
+        "📍 [City] | Available worldwide",
+        "👇 Book your free consultation"
+    ],
+    "portrait": [
+        "📸 Portrait & Headshot Specialist",
+        "✨ Helping you look your best",
+        "🎯 Confidence-boosting photos",
+        "📍 [City] Studio & On-location",
+        "👇 DM 'READY' to book"
+    ],
+    "family": [
+        "👨‍👩‍👧‍👦 Family & Newborn Photographer",
+        "💕 Freezing your precious moments",
+        "📍 [City] & surrounding areas",
+        "🏆 [X]+ happy families served",
+        "👇 Link in bio for sessions"
+    ]
+}
+
+# CTA (Call-to-Action) variations
+CTA_TEMPLATES = {
+    "booking": [
+        "DM me 'BOOK' to check availability",
+        "Spots filling fast for [month]! Link in bio to reserve",
+        "Ready to capture your moments? Let's chat 💬",
+        "Only [X] spots left this month! DM to claim yours",
+        "Your story deserves to be told. Book your session today"
+    ],
+    "engagement": [
+        "Double tap if you agree! ❤️",
+        "Tag someone who needs to see this",
+        "Save this for later 📌",
+        "Share this with a fellow photographer",
+        "Drop a 📸 if you're a photographer too"
+    ],
+    "lead_generation": [
+        "DM me 'GUIDE' for my free posing guide",
+        "Comment 'TIPS' and I'll send you my top 5 editing secrets",
+        "Want my preset pack? Link in bio!",
+        "Free consultation for first 5 people who DM today",
+        "Reply 'INFO' for pricing and packages"
+    ]
+}
+
+# Client attraction post templates
+CLIENT_MAGNETS = {
+    "testimonial_templates": [
+        "⭐⭐⭐⭐⭐\n\n\"{testimonial}\"\n\n- {client_name}\n\nReady for your own amazing experience? DM me!",
+        "CLIENT LOVE 💕\n\nWorking with {client_name} was absolutely magical. Here's what they had to say:\n\n\"{testimonial}\"\n\nYour turn next? Link in bio!",
+        "This review made my whole week 🥹\n\n\"{testimonial}\"\n\nThank you {client_name} for trusting me with your special day!"
+    ],
+    "portfolio_templates": [
+        "✨ NEW WORK ✨\n\n{session_type} session with {client_name}\n\nLocation: {location}\nVibe: {mood}\n\nBooking similar sessions now for {month}!",
+        "Can we talk about this {session_type}? 😍\n\n{description}\n\nSwipe to see more from this magical session →\n\nWant photos like these? DM me!",
+        "POV: You booked a {session_type} session with me\n\n{description}\n\nThis could be you! Booking link in bio 🔗"
+    ],
+    "value_posts": [
+        "🎁 FREE GUIDE\n\nI created a guide on '{topic}' and I'm giving it away!\n\nWhat's inside:\n✅ {point1}\n✅ {point2}\n✅ {point3}\n\nDM me 'GUIDE' to get yours!",
+        "Save this post if you want better photos! 📌\n\n{tip_content}\n\nFollow for more photography tips!\n\n#photographytips #phototips",
+        "The secret to {result}? 👇\n\n{tip_content}\n\nWant me to do this for you? Let's chat!"
+    ]
+}
+
+# Hashtag strategy
+HASHTAG_STRATEGY = {
+    "small_account": {  # Under 10k followers
+        "strategy": "Focus on niche, location-based, and smaller hashtags (under 500k posts)",
+        "mix": "5 small (under 50k) + 5 medium (50k-500k) + 5 location-based"
+    },
+    "growing_account": {  # 10k-50k followers
+        "strategy": "Mix of medium and some larger hashtags",
+        "mix": "3 small + 7 medium + 3 large (500k-2M) + 2 branded"
+    },
+    "established_account": {  # 50k+ followers
+        "strategy": "Can compete with larger hashtags",
+        "mix": "5 medium + 5 large + 3 mega (2M+) + 2 branded"
+    }
+}
+
 # Niche-specific hashtags database
 NICHE_HASHTAGS = {
     "housewarming": ["#housewarming", "#newhome", "#homesweethome", "#housewarmingparty", "#newbeginnings", "#homeowner", "#dreamhome", "#homedecor", "#homedesign", "#interiordesign", "#realtor", "#firsthome", "#homecelebration", "#newchapter", "#homegoals"],
