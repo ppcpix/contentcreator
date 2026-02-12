@@ -9,6 +9,7 @@ import {
   Camera,
   Menu,
   X,
+  Rocket,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -16,7 +17,8 @@ const navItems = [
   { path: "/", icon: LayoutDashboard, label: "Dashboard" },
   { path: "/create", icon: PenTool, label: "Create Content" },
   { path: "/calendar", icon: Calendar, label: "Calendar" },
-  { path: "/ideas", icon: Lightbulb, label: "Ideas Generator" },
+  { path: "/ideas", icon: Lightbulb, label: "Ideas Hub" },
+  { path: "/growth", icon: Rocket, label: "Growth Tools" },
   { path: "/analytics", icon: BarChart3, label: "Analytics" },
 ];
 
