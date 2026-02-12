@@ -7,6 +7,7 @@ import ContentCreator from "@/pages/ContentCreator";
 import Calendar from "@/pages/Calendar";
 import IdeasGenerator from "@/pages/IdeasGenerator";
 import Analytics from "@/pages/Analytics";
+import GrowthTools from "@/pages/GrowthTools";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="create" element={<ContentCreator />} />
             <Route path="calendar" element={<Calendar />} />
             <Route path="ideas" element={<IdeasGenerator />} />
+            <Route path="growth" element={<GrowthTools />} />
             <Route path="analytics" element={<Analytics />} />
           </Route>
         </Routes>
