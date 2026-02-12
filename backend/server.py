@@ -389,6 +389,22 @@ class ContentMixRequest(BaseModel):
     categories: Optional[List[str]] = None
     count: int = 5
 
+class ViralHookRequest(BaseModel):
+    hook_type: str  # curiosity, storytelling, value, engagement, social_proof
+    niche: Optional[str] = None
+    count: int = 5
+
+class ReelIdeaRequest(BaseModel):
+    category: Optional[str] = None  # trending, educational, engagement_boosters
+    niche: Optional[str] = None
+    count: int = 5
+
+class ClientMagnetRequest(BaseModel):
+    template_type: str  # testimonial, portfolio, value_posts
+    niche: str
+    client_name: Optional[str] = None
+    details: Optional[dict] = None
+
 class ScheduledPost(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
