@@ -216,6 +216,30 @@ class ContentIdea(BaseModel):
     best_time_to_post: str
     content_type: str  # photo, carousel, reel, story
 
+class PhotographyTip(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    category: str
+    tip: str
+    caption_idea: str
+    hashtags: List[str]
+
+class ContentMixIdea(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    category: str
+    idea: str
+    description: str
+    caption: str
+    hashtags: List[str]
+    content_type: str
+
+class TipsRequest(BaseModel):
+    categories: Optional[List[str]] = None
+    count: int = 5
+
+class ContentMixRequest(BaseModel):
+    categories: Optional[List[str]] = None
+    count: int = 5
+
 class ScheduledPost(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
