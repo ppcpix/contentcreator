@@ -192,7 +192,8 @@ class InstagramContentAPITester:
         if failed_tests:
             print(f"\n❌ FAILED TESTS:")
             for test in failed_tests:
-                print(f"   - {test['name']}: {test.get('error', f'Status {test['actual_status']}')} ")
+                error_msg = test.get('error', f"Status {test['actual_status']}")
+                print(f"   - {test['name']}: {error_msg}")
         
         return self.tests_passed == self.tests_run
 
