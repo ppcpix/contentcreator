@@ -39,6 +39,118 @@ PHOTOGRAPHY_NICHES = [
     "housewarming", "baby_shower", "wedding", "portrait", "landscape", "event"
 ]
 
+# Photography tips database - General tips for all photographers
+PHOTOGRAPHY_TIPS = {
+    "lighting": [
+        "Golden hour (1 hour after sunrise/before sunset) creates magical warm light",
+        "Use window light for soft, flattering portraits indoors",
+        "Overcast days act as nature's softbox - perfect for portraits",
+        "Backlight your subjects during golden hour for dreamy silhouettes",
+        "Use reflectors to fill in shadows on faces",
+        "Avoid harsh midday sun - it creates unflattering shadows"
+    ],
+    "composition": [
+        "Rule of thirds - place subjects at intersection points",
+        "Leading lines draw viewers into your photo",
+        "Frame your subject using natural elements like doorways or trees",
+        "Leave negative space to create visual breathing room",
+        "Get low for dramatic perspectives",
+        "Shoot through foreground elements for depth"
+    ],
+    "camera_settings": [
+        "Use f/1.8-2.8 for beautiful bokeh in portraits",
+        "Keep ISO as low as possible for cleaner images",
+        "1/125s minimum shutter speed for sharp handheld portraits",
+        "Shoot in RAW for maximum editing flexibility",
+        "Use back-button focus for better control",
+        "Bracket exposures in tricky lighting situations"
+    ],
+    "posing": [
+        "Have subjects shift weight to back foot for natural stance",
+        "Chin slightly forward and down to define jawline",
+        "Create gaps between arms and body to slim appearance",
+        "Give subjects something to do with their hands",
+        "Encourage movement for natural expressions",
+        "Capture in-between moments for authentic shots"
+    ],
+    "business": [
+        "Share behind-the-scenes content to build connection",
+        "Post client testimonials with their permission",
+        "Create educational content to establish expertise",
+        "Engage with comments within the first hour of posting",
+        "Use carousel posts - they get 3x more engagement",
+        "Post consistently - aim for 4-7 times per week"
+    ],
+    "editing": [
+        "Develop a consistent editing style for brand recognition",
+        "Don't over-smooth skin - keep texture natural",
+        "Use HSL adjustments to make colors pop",
+        "Straighten horizons - even slight tilts look unprofessional",
+        "Crop intentionally to strengthen composition",
+        "Add subtle vignette to draw focus to subject"
+    ]
+}
+
+# Content mix suggestions for variety
+CONTENT_MIX_IDEAS = {
+    "behind_the_scenes": [
+        "Show your camera gear setup",
+        "Share your editing process timelapse",
+        "Document a day in your life as photographer",
+        "Show your workspace/studio setup",
+        "Share packing routine for on-location shoots",
+        "Post bloopers and funny moments from shoots"
+    ],
+    "educational": [
+        "Before/after editing comparison",
+        "Quick tip in 60 seconds (Reel)",
+        "Common photography mistakes to avoid",
+        "How to pose for photos (for clients)",
+        "Best times of day for photos in your city",
+        "Equipment recommendations at different price points"
+    ],
+    "engagement_posts": [
+        "This or That polls (editing styles, locations)",
+        "Caption this photo contests",
+        "Ask followers: sunrise or sunset sessions?",
+        "Share your photography journey milestone",
+        "Client appreciation posts",
+        "Throwback to your first professional shoot"
+    ],
+    "trending_content": [
+        "Seasonal mini sessions announcements",
+        "Holiday-themed photo ideas",
+        "Trending Reel audio with your best shots",
+        "Collaboration with local vendors",
+        "Location reveal of hidden gems",
+        "Day-to-night transformation shots"
+    ],
+    "portfolio_showcase": [
+        "Single stunning hero image with story",
+        "Before/after of venue transformation",
+        "Series of emotions from one event",
+        "Color-coordinated grid posts",
+        "Carousel of best shots from one session",
+        "Client story feature with multiple photos"
+    ]
+}
+
+# Seasonal content calendar
+SEASONAL_CONTENT = {
+    "january": ["New Year resolution shoots", "Winter wonderland sessions", "Cozy indoor portraits"],
+    "february": ["Valentine's couples sessions", "Galentine's group shoots", "Love story features"],
+    "march": ["Spring bloom portraits", "St. Patrick's themed shoots", "Cherry blossom sessions"],
+    "april": ["Easter family photos", "Spring cleaning your portfolio", "Rainy day creative shots"],
+    "may": ["Mother's Day specials", "Graduation sessions", "Flower field portraits"],
+    "june": ["Wedding season highlights", "Father's Day features", "Summer solstice golden hour"],
+    "july": ["Summer family sessions", "Beach/pool photography", "Fireworks and celebrations"],
+    "august": ["Back to school minis", "Late summer golden sessions", "Sunset chasing content"],
+    "september": ["Fall mini sessions launch", "Labor Day family photos", "Autumn color scouting"],
+    "october": ["Halloween themed shoots", "Pumpkin patch sessions", "Fall foliage portraits"],
+    "november": ["Thanksgiving family sessions", "Gratitude posts", "Holiday card session promos"],
+    "december": ["Holiday mini sessions", "Year in review posts", "Winter holiday magic shots"]
+}
+
 # Niche-specific hashtags database
 NICHE_HASHTAGS = {
     "housewarming": ["#housewarming", "#newhome", "#homesweethome", "#housewarmingparty", "#newbeginnings", "#homeowner", "#dreamhome", "#homedecor", "#homedesign", "#interiordesign", "#realtor", "#firsthome", "#homecelebration", "#newchapter", "#homegoals"],
