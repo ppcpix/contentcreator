@@ -89,9 +89,14 @@ Photography business is experiencing low engagement on Instagram due to lack of 
 - [x] AI caption generation
 - [x] Content calendar with scheduling
 - [x] Niche ideas generator
-- [x] Photography tips generator (NEW)
-- [x] Content mix ideas (NEW)
-- [x] Seasonal content calendar (NEW)
+- [x] Photography tips generator
+- [x] Content mix ideas
+- [x] Seasonal content calendar
+- [x] **Growth Tools (NEW)**:
+  - Viral Hooks Generator (5 types: curiosity, storytelling, value, engagement, social proof)
+  - Reel Ideas Generator (trending, educational, engagement boosters)
+  - Client Magnets (testimonials, portfolio showcase, lead magnets)
+  - CTA Library (booking, engagement, lead generation)
 - [x] Analytics dashboard
 
 ### P1 (Next Phase)
